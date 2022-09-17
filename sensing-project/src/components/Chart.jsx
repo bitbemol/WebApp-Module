@@ -39,7 +39,7 @@ function Chart() {
         return (
             <>
                 <h1>No data</h1>
-                <button onClick={handleGetData}>Calculate Plot</button>
+                <button onClick={handleGetData}>Calcular Mapa</button>
             </>
         )
     }
@@ -57,14 +57,12 @@ function Chart() {
                 }
             />
             <div className='card'>
-                <button>Calculate Plot</button>
-                <button onClick={handleDownloadMeasurements}>Download Measurements</button>
+                <button>Calculate Mapa</button>
+                <button onClick={handleDownloadMeasurements}>Descargar Mediciones</button>
             </div>
 
         </>
-
     )
-
 }
 
 export default Chart
