@@ -4,15 +4,31 @@ import { useState } from 'react'
 
 function Chart() {
     const sensorsURL = 'http://sensors.local/get-data'
+
     const [sensorsData, setSensorsData] = useState(null)
+
     const handleGetData = () => {
         // Get your data manipulation
-        setSensorsData([
-            [1, 0, 0, 1, 2],
-            [1, 1, 1, 0, 3],
-            [1, 1, 0, 1, 0],
-            [1, 0, 1, 1, 1],
-        ]) // set data here for the plot (z values)
+        getDataFromSensors()
+            .then((stringData) => {
+                // Expecting some string like this:
+                //"{\"Sensor\":\"Test\", \"Data\":[[1,2,3,4,5],[1,2,3,4,5]]}"
+                const JSONData = JSON.parse(stringData)
+                return JSONData["Data"] // !! This name must exist in the String!
+            })
+            .then((matrixData) => {
+                setSensorsData(matrixData) // set data here for the plot (z values)
+            })
+            .catch(alert)
+
+    }
+
+    async function getDataFromSensors() {
+        const response = await fetch(sensorsURL)
+        if (!response.ok) {
+            throw new Error(`Error Status ${response.status}`)
+        }
+        return response.text()
     }
 
     const handleDownloadMeasurements = () => {
@@ -27,18 +43,10 @@ function Chart() {
         element.click()
     }
 
-    async function getDataFromSensors() {
-        const response = await fetch(sensorsURL)
-        if (!response.ok) {
-            throw new Error(`Error Status ${response.status}`)
-        }
-        return response.text()
-    }
-
     if (sensorsData == null) {
         return (
             <>
-                <h1>No data</h1>
+                <h1>Inicia una medición para mostrar algo</h1>
                 <button onClick={handleGetData}>Calcular Mapa</button>
             </>
         )
@@ -53,7 +61,11 @@ function Chart() {
                             type: 'heatmap'
                         }
                     ]}
-                layout={{ width: 620, height: 540, title: 'Mapa de luxes' }
+                layout={{
+                    width: 620,
+                    height: 540,
+                    title: 'Mapa de luxes'
+                }
                 }
             />
             <div className='card'>
