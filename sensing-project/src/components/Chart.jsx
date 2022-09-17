@@ -7,7 +7,12 @@ function Chart() {
     const [sensorsData, setSensorsData] = useState(null)
     const handleGetData = () => {
         // Get your data manipulation
-        setSensorsData(10) // set data here for the plot
+        setSensorsData([
+            [1, 0, 0, 1, 2],
+            [1, 1, 1, 0, 0],
+            [1, 1, 0, 1, 0],
+            [1, 0, 1, 1, 1],
+        ]) // set data here for the plot (z values)
     }
 
     async function getDataFromSensors() {
@@ -32,13 +37,11 @@ function Chart() {
                 data={
                     [
                         {
-                            x: [1, 2, 3],
-                            y: [2, 6, 3],
-                            type: 'scatter',
+                            z: sensorsData,
+                            type: 'heatmap',
                             mode: 'lines+markers',
                             marker: { color: 'red' },
-                        },
-                        { type: 'bar', x: [1, 2, 3], y: [2, 5, 3] },
+                        }
                     ]}
                 layout={{ width: 520, height: 440, title: 'A Fancy Plot' }
                 }
@@ -55,3 +58,12 @@ function Chart() {
 }
 
 export default Chart
+
+/**
+ * Documentation
+ * 
+ * - Example of using plotly inside React:
+ *  https://community.plotly.com/t/plotly-heatmap-fix-color-range-in-react/53314
+ * 
+ * 
+ */
