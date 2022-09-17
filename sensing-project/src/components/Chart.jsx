@@ -9,10 +9,22 @@ function Chart() {
         // Get your data manipulation
         setSensorsData([
             [1, 0, 0, 1, 2],
-            [1, 1, 1, 0, 0],
+            [1, 1, 1, 0, 3],
             [1, 1, 0, 1, 0],
             [1, 0, 1, 1, 1],
         ]) // set data here for the plot (z values)
+    }
+
+    const handleDownloadMeasurements = () => {
+        // TODO: Check if data downloaded correctly with parentheses
+        const element = document.createElement('a')
+        const file = new Blob(sensorsData, {
+            type: "text/plain"
+        })
+        element.href = URL.createObjectURL(file)
+        element.download = 'measurements.txt'
+        document.body.appendChild(element)
+        element.click()
     }
 
     async function getDataFromSensors() {
@@ -38,17 +50,15 @@ function Chart() {
                     [
                         {
                             z: sensorsData,
-                            type: 'heatmap',
-                            mode: 'lines+markers',
-                            marker: { color: 'red' },
+                            type: 'heatmap'
                         }
                     ]}
-                layout={{ width: 520, height: 440, title: 'A Fancy Plot' }
+                layout={{ width: 620, height: 540, title: 'Mapa de luxes' }
                 }
             />
             <div className='card'>
                 <button>Calculate Plot</button>
-                <button>Download Measurements</button>
+                <button onClick={handleDownloadMeasurements}>Download Measurements</button>
             </div>
 
         </>
@@ -65,5 +75,7 @@ export default Chart
  * - Example of using plotly inside React:
  *  https://community.plotly.com/t/plotly-heatmap-fix-color-range-in-react/53314
  * 
+ * - Download file with data
+ *  https://thewebdev.info/2021/11/20/how-to-download-a-string-as-txt-file-in-react/
  * 
  */
